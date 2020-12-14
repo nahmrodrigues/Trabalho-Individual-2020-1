@@ -1,5 +1,5 @@
 image:
-  name: docker/compose:latest
+  name: docker:19.03.13/compose:1.26.0
 
 services:
   - docker:dind
@@ -12,4 +12,12 @@ build:
   stage: build
   script:
     - docker-compose down
-    - docker-compose build
+    - docker-compose build -t trab-image .
+
+test-api:
+  stage: test
+  script: docker-compose run api bundle exec rails test
+
+test-web:
+  stage: test
+  script: docker-compose run web yarn run test:unit
