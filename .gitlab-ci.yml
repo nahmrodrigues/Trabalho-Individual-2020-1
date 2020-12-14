@@ -4,6 +4,9 @@ image:
 services:
   - docker:dind
 
+variables:
+    NODE_ENV: test
+
 before_script:
   - docker version
   - docker-compose version
@@ -24,11 +27,8 @@ before_script:
 
 build:
   stage: build
-  variables:
-    NODE_ENV: 'test'
   script: 
     - echo $NODE_ENV
-    - docker-compose build --force-rm web
     - docker-compose run web yarn run test:unit
 
 # code_quality:
