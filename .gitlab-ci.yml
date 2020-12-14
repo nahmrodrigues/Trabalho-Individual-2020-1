@@ -14,20 +14,21 @@ stages:
 staging:
   stage: staging
   script: 
-
-
-build:
-  stage: build
-  script:
     - docker-compose down
     - docker-compose build
     - docker-compose run api bundle exec rails test
     - docker-compose run web yarn run test:unit
 
+
+# build:
+#   stage: build
+#   script:
+#     - docker-compose down
+#     - docker-compose build
+
 # test-api:
 #   stage: test
-#   script: 
-#     - docker-compose run api bundle exec rails test
+#   script: docker-compose run api bundle exec rails test
 
 # test-web:
 #   stage: test
