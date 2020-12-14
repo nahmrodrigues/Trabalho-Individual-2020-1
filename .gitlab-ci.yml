@@ -8,23 +8,26 @@ before_script:
   - docker version
   - docker-compose version
 
-build:
-  stage: build
-  script:
-    - docker-compose down
-    - docker-compose build
+# build:
+#   stage: build
+#   script:
+#     - docker-compose down
+#     - docker-compose build
 
-test-api:
-  stage: test
-  script:
-    - docker-compose build api
-    - docker-compose run api rake db:create
-    - docker-compose run api rake db:migrate
-    - docker-compose run api bundle exec rails test
-  # script: docker-compose run api rake db:create && rake db:migrate && bundle exec rails test
+# test-api:
+#   stage: test
+#   script:
+#     - docker-compose build api
+#     - docker-compose run api rake db:create
+#     - docker-compose run api rake db:migrate
+#     - docker-compose run api bundle exec rails test
 
 test-web:
   stage: test
-  script: docker-compose run web yarn run test:unit
+  variables:
+    NODE_ENV: test
+  script: 
+    - echo $env:NODE_ENV
+    - docker-compose run web yarn run test:unit
 
 # code_quality:
