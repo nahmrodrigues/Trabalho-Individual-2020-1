@@ -1,5 +1,5 @@
 image:
-  name: docker:19.03.13/compose:1.26.0
+  name: docker/compose:1.26.0
 
 services:
   - docker:dind
@@ -21,3 +21,5 @@ test-api:
 test-web:
   stage: test
   script: docker-compose run web yarn run test:unit
+
+# code_quality:
