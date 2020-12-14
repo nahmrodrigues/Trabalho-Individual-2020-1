@@ -30,6 +30,7 @@ test-web:
     - docker-compose run web yarn run test:unit
 
 code_quality:
+  stage: test
   image: docker:stable
   variables:
     DOCKER_DRIVER: overlay2
@@ -44,5 +45,7 @@ code_quality:
         --volume /var/run/docker.sock:/var/run/docker.sock
         "registry.gitlab.com/gitlab-org/ci-cd/codequality:$SP_VERSION" /code
   artifacts:
+    paths:
+      - gl-code-quality-report.json
     reports:
       codequality: gl-code-quality-report.json
