@@ -16,7 +16,8 @@ build:
 
 test-api:
   stage: test
-  script: docker-compose run api bundle exec rails test
+  script: 
+    - docker-compose run api bundle exec rails test
 
 test-web:
   stage: test
