@@ -22,7 +22,7 @@ test-api:
     - docker-compose run api rake db:migrate
     - docker-compose run api bundle exec rails test
 
-build:
+test-web:
   stage: test
   script: docker-compose run web yarn run test:unit
 
