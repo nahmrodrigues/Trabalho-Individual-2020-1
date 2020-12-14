@@ -4,31 +4,26 @@ image:
 services:
   - docker:dind
 
-variables:
-    NODE_ENV: test
-
 before_script:
   - docker version
   - docker-compose version
 
-# build:
-#   stage: build
-#   script:
-#     - docker-compose down
-#     - docker-compose build
-
-# test-api:
-#   stage: test
-#   script:
-#     - docker-compose build api
-#     - docker-compose run api rake db:create
-#     - docker-compose run api rake db:migrate
-#     - docker-compose run api bundle exec rails test
-
 build:
   stage: build
-  script: 
-    - echo $NODE_ENV
-    - docker-compose run web yarn run test:unit
+  script:
+    - docker-compose down
+    - docker-compose build
+
+test-api:
+  stage: test
+  script:
+    - docker-compose build api
+    - docker-compose run api rake db:create
+    - docker-compose run api rake db:migrate
+    - docker-compose run api bundle exec rails test
+
+build:
+  stage: test
+  script: docker-compose run web yarn run test:unit
 
 # code_quality:
