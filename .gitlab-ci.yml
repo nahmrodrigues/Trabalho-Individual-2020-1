@@ -24,6 +24,9 @@ test-api:
 
 test-web:
   stage: test
-  script: docker-compose run web yarn run test:unit
+  script: 
+    - docker-compose build web
+    - docker-compose run web yarn install
+    - docker-compose run web yarn run test:unit
 
 # code_quality:
