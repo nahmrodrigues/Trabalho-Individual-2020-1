@@ -23,7 +23,7 @@ before_script:
 #     - docker-compose run api bundle exec rails test
 
 test-web:
-  stage: test
+  stage: build
   variables:
     NODE_ENV: test
   script: 
