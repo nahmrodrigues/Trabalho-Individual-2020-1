@@ -12,7 +12,7 @@ build:
   stage: build
   script:
     - docker-compose down
-    - docker-compose build -t trab-image .
+    - docker-compose build
 
 test-api:
   stage: test
