@@ -5,18 +5,18 @@ services:
   - docker:dind
 
 stages:
-  - build
+  # - build
   - test
 
 before_script:
   - docker version
   - docker-compose version
 
-build:
-  stage: build
-  script:
-    - docker-compose down
-    - docker-compose build
+# build:
+#   stage: build
+#   script:
+#     - docker-compose down
+#     - docker-compose build
 
 code_quality:
   stage: test
@@ -33,26 +33,24 @@ code_quality:
   artifacts:
     paths: 
       - public/
-  # tags :
-  #   - ci_test
-  # only:
-  #   refs:
-  #       - feature/with-docker-compose
-  #   variables:
-  #       - $PIPELINE_MODE == "medium"
-  #       - $PIPELINE_MODE == "advanced"
+  only:
+    refs:
+        - feature/with-docker-compose
+    variables:
+        - $PIPELINE_MODE == "medium"
+        - $PIPELINE_MODE == "advanced"
 
-test_api:
-  stage: test
-  script:
-    - docker-compose build api
-    - docker-compose run api rake db:create
-    - docker-compose run api rake db:migrate
-    - docker-compose run api bundle exec rails test
+# test_api:
+#   stage: test
+#   script:
+#     - docker-compose build api
+#     - docker-compose run api rake db:create
+#     - docker-compose run api rake db:migrate
+#     - docker-compose run api bundle exec rails test
 
-test_web:
-  stage: test
-  script: 
-    - docker-compose build web
-    - docker-compose run web yarn install
-    - docker-compose run web yarn run test:unit
+# test_web:
+#   stage: test
+#   script: 
+#     - docker-compose build web
+#     - docker-compose run web yarn install
+#     - docker-compose run web yarn run test:unit
