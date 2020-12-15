@@ -33,12 +33,12 @@ code_quality:
   artifacts:
     paths: 
       - public/
-  only:
-    refs:
-        - feature/with-docker-compose
-    variables:
-        - $PIPELINE_MODE == "medium"
-        - $PIPELINE_MODE == "advanced"
+  # only:
+  #   refs:
+  #       - feature/with-docker-compose
+  #   variables:
+  #       - $PIPELINE_MODE == "medium"
+  #       - $PIPELINE_MODE == "advanced"
 
 # test_api:
 #   stage: test
