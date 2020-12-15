@@ -1,42 +1,21 @@
 # Trabalho Individual - GCES - 2020/1
 
-A Gestão de Configuração de Software é parte fundamental no curso de GCES, e dominar os conhecimentos de configuração de ambiente, containerização, virtualização, integração e deploy contínuo tem se tornado cada vez mais necessário para ingressar no mercado de trabalho.
+## 1. Containerização
 
-Para exercitar estes conhecimentos, você deverá aplicar os conceitos estudados ao longo da disciplina no produto de software contido neste repositório.
+A conteinerização da aplicação foi feita com a utilização das ferramentas Docker (v19.03.13) e Docker Compose (v1.26.0, com sintaxe na versão 3.8). 
 
-O sistema se trata de uma aplicação Web, cuja funcionalidade consiste na pesquisa e exibição de perfis de usuários do GitHub, que é composta de:
+Para rodar localmente a aplicação, utilize o comando:
 
-- Front End escrito em Javascript, utilizando os frameworks Vue.JS e Quasar;
-- Back End escrito em Ruby on Rails, utilizado em modo API;
-- Banco de Dados PostgreSQL;
+`docker-compose up --build`
 
-Para executar a aplicação na sua máquina, basta seguir o passo-a-passo descrito no arquivo [Descrição e Instruções](Descricao-e-Instrucoes.md).
+Concluído o processo, basta acessar o endereço `localhost:8080` para ter acesso às funcionalidades do sistema.
 
-## Critérios de avaliação
+## 2. Integração Contínua
 
-### 1. Containerização
+A integração contínua foi configurada com o auxílio da ferramenta GitlabCI. Quatro _jobs_ foram definidos no pipeline, sendo um para o processo de _build_ da aplicação e três para o processo de testes. 
 
-A aplicação deverá ter seu ambiente completamente containerizado. Desta forma, cada subsistema (Front End, Back End e Banco de Dados) deverá ser isolado em um container individual.
+Os três _jobs_ que compõem o processo de teste foram definidos da seguinte maneira:
 
-Deverá ser utilizado um orquestrador para gerenciar comunicação entre os containers, o uso de credenciais, networks, volumes, entre outras configurações necessárias para a correta execução da aplicação.
-
-Para realizar esta parte do trabalho, recomenda-se a utilização das ferramentas:
-
-- Docker versão 17.04.0+
-- Docker Compose com sintaxe na versão 3.2+
-
-### 2. Integração contínua
-
-Você deverá criar um 'Fork' deste repositório, onde será desenvolvida sua solução. Nele, cada commit submetido deverá passar por um sistema de integração contínua, realizando os seguintes estágios:
-
-- Build: Construção completa do ambiente;
-- Testes: Os testes automatizados da aplicação devem ser executados;
-- Coleta de métricas: Deverá ser realizada a integração com algum serviço externo de coleta de métricas de qualidade;
-
-O sistema de integração contínua deve exibir as informações de cada pipeline, e impedir que trechos de código que não passem corretamente por todo o processo sejam adicionados à 'branch default' do repositório.
-
-Para esta parte do trabalho, poderá ser utilizada qualquer tecnologia ou ferramenta que o aluno desejar, como GitlabCI, TravisCI, CircleCI, Jenkins, CodeClimate, entre outras.
-
-### 3. Deploy contínuo (Extra)
-
-Caso cumpra todos os requisitos descritos acima, será atribuída uma pontuação extra para o aluno que configure sua pipeline de modo a publicar a aplicação automaticamente, sempre que um novo trecho de código seja integrado à branch default.
+* **api_test:** execução dos testes da api desenvolvida em Ruby on Rails;
+* **web_test:** execução dos testes do frontend desenvolvido em Vue.js;
+* **code_quality:** geração de métricas de qualidade de código, com a utilização da configuração default do Code Climate (o arquivo codeclimate.html pode ser baixado na página de execução do _job_ no Gitlab).
