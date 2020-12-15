@@ -23,7 +23,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    command: bash -c "yarn dev"
+    command: bash -c "yarn install && yarn dev"
     volumes:
       - ./client:/client
       - ./client/yarn_cache:/client/node_modules
