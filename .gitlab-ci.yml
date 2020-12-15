@@ -1,33 +1,33 @@
-image:
-  name: docker/compose:latest
+# image:
+#   name: docker/compose:latest
 
-services:
-  - docker:dind
+# services:
+#   - docker:dind
 
-before_script:
-  - docker version
-  - docker-compose version
+# before_script:
+#   - docker version
+#   - docker-compose version
 
-build:
-  stage: build
-  script:
-    - docker-compose down
-    - docker-compose build
+# build:
+#   stage: build
+#   script:
+#     - docker-compose down
+#     - docker-compose build
 
-test_api:
-  stage: test
-  script:
-    - docker-compose build api
-    - docker-compose run api rake db:create
-    - docker-compose run api rake db:migrate
-    - docker-compose run api bundle exec rails test
+# test_api:
+#   stage: test
+#   script:
+#     - docker-compose build api
+#     - docker-compose run api rake db:create
+#     - docker-compose run api rake db:migrate
+#     - docker-compose run api bundle exec rails test
 
-test_web:
-  stage: test
-  script: 
-    - docker-compose build web
-    - docker-compose run web yarn install
-    - docker-compose run web yarn run test:unit
+# test_web:
+#   stage: test
+#   script: 
+#     - docker-compose build web
+#     - docker-compose run web yarn install
+#     - docker-compose run web yarn run test:unit
 
 # code_quality:
 #   stage: test
@@ -46,3 +46,26 @@ test_web:
 #     paths: [gl-code-quality-report.json]
 #     reports:
 #       codequality: gl-code-quality-report.json
+
+
+codequality:
+   stage: test
+   image : docker:stable
+   services:
+     - docker:dind
+   script:
+     - mkdir public
+     - docker pull codeclimate/codeclimate:0.85.4
+     - docker run --name hatoum --env CODECLIMATE_DEBUG=1 --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc codeclimate/codeclimate:0.85.4 analyze -f html > codeclimate.html
+     - mv codeclimate.html public
+   artifacts:
+     paths: 
+       - public/
+   tags :
+     - ci_test
+   only:
+      refs:
+         - feature/with-docker-compose
+      variables:
+         - $PIPELINE_MODE == "medium"
+         - $PIPELINE_MODE == "advanced"
