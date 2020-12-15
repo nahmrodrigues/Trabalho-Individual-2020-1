@@ -18,28 +18,6 @@ before_script:
 #     - docker-compose down
 #     - docker-compose build
 
-code_quality:
-  stage: test
-  image : 
-    name: docker:stable
-  services:
-    - docker:dind
-  allow_failure: true
-  script:
-    - mkdir public
-    - docker pull codeclimate/codeclimate:latest
-    - docker run --name hatoum --env CODECLIMATE_DEBUG=1 --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc codeclimate/codeclimate:0.85.4 analyze -f html > codeclimate.html
-    - mv codeclimate.html public
-  artifacts:
-    paths: 
-      - public/
-  # only:
-  #   refs:
-  #       - feature/with-docker-compose
-  #   variables:
-  #       - $PIPELINE_MODE == "medium"
-  #       - $PIPELINE_MODE == "advanced"
-
 # test_api:
 #   stage: test
 #   script:
@@ -54,3 +32,21 @@ code_quality:
 #     - docker-compose build web
 #     - docker-compose run web yarn install
 #     - docker-compose run web yarn run test:unit
+
+code_quality:
+  stage: test
+  image : 
+    name: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker version
+  allow_failure: true
+  script:
+    - mkdir public
+    - docker pull codeclimate/codeclimate:latest
+    - docker run --name hatoum --env CODECLIMATE_DEBUG=1 --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc codeclimate/codeclimate:0.85.4 analyze -f html > codeclimate.html
+    - mv codeclimate.html public
+  artifacts:
+    paths: 
+      - public/
