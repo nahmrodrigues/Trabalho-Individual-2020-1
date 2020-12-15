@@ -29,27 +29,28 @@ test_web:
     - docker-compose run web yarn install
     - docker-compose run web yarn run test:unit
 
-codequality:
-   stage: test
-   image : docker:stable
-   services:
-     - docker:dind
-   script:
-     - mkdir public
-     - docker pull codeclimate/codeclimate:0.85.4
-     - docker run --name hatoum --env CODECLIMATE_DEBUG=1 --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc codeclimate/codeclimate:0.85.4 analyze -f html > codeclimate.html
-     - mv codeclimate.html public
-   artifacts:
-     paths: 
-       - public/
-   tags :
-     - ci_test
-   only:
-      refs:
-         - feature/with-docker-compose
-      variables:
-         - $PIPELINE_MODE == "medium"
-         - $PIPELINE_MODE == "advanced"
+code_quality:
+  stage: test
+  image : docker:stable
+  services:
+    - docker:dind
+  allow_failure: true
+  script:
+    - mkdir public
+    - docker pull codeclimate/codeclimate:0.85.4
+    - docker run --name hatoum --env CODECLIMATE_DEBUG=1 --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock --volume /tmp/cc:/tmp/cc codeclimate/codeclimate:0.85.4 analyze -f html > codeclimate.html
+    - mv codeclimate.html public
+  artifacts:
+    paths: 
+      - public/
+  tags :
+    - ci_test
+  only:
+    refs:
+        - feature/with-docker-compose
+    variables:
+        - $PIPELINE_MODE == "medium"
+        - $PIPELINE_MODE == "advanced"
 
 # code_quality:
 #   stage: test
