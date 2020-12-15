@@ -16,6 +16,6 @@ A integração contínua foi configurada com o auxílio da ferramenta GitlabCI. 
 
 Os três _jobs_ que compõem o processo de teste foram definidos da seguinte maneira:
 
-* **api_test:** execução dos testes da api desenvolvida em Ruby on Rails;
-* **web_test:** execução dos testes do frontend desenvolvido em Vue.js;
+* **test_api:** execução dos testes da api desenvolvida em Ruby on Rails;
+* **test_web:** execução dos testes do frontend desenvolvido em Vue.js;
 * **code_quality:** geração de métricas de qualidade de código, com a utilização da configuração default do Code Climate (o arquivo codeclimate.html pode ser baixado na página de execução do _job_ no Gitlab).
