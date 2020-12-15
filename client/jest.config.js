@@ -15,5 +15,6 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
-  transformIgnorePatterns: ['/node_modules/(?!vuetify)']
+  transformIgnorePatterns: ['/node_modules/(?!vuetify)'],
+  cacheDirectory: "<rootDir>/yarn_cache"
 }
